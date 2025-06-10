@@ -877,7 +877,19 @@ function App() {
   const { isDarkMode } = usePortfolioStore();
 
   useEffect(() => {
-    // Apply dark mode class to document
+    // Initialize dark mode on app load
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (savedDarkMode) {
+      document.documentElement.classList.add('dark');
+      usePortfolioStore.setState({ isDarkMode: true });
+    } else {
+      document.documentElement.classList.remove('dark');
+      usePortfolioStore.setState({ isDarkMode: false });
+    }
+  }, []);
+
+  useEffect(() => {
+    // Apply dark mode class to document when state changes
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
