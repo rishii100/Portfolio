@@ -300,15 +300,12 @@ const HeroSection = () => {
               >
                 View My Work
               </button>
-              <a
-                href={personalInfo.resume}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-3 border-2 border-blue-600 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white transition-all transform hover:scale-105 font-medium flex items-center gap-2 justify-center"
+              <button
+                onClick={() => usePortfolioStore.getState().scrollToSection('contact')}
+                className="px-8 py-3 border-2 border-blue-600 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white transition-all transform hover:scale-105 font-medium"
               >
-                <Download className="w-4 h-4" />
-                Download Resume
-              </a>
+                Get In Touch
+              </button>
             </motion.div>
 
             <motion.div
