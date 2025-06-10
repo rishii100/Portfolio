@@ -5,7 +5,7 @@ export const usePortfolioStore = create((set, get) => ({
   // UI State
   currentSection: 'hero',
   isLoading: false,
-  isDarkMode: true,
+  isDarkMode: typeof window !== 'undefined' ? localStorage.getItem('darkMode') === 'true' : true,
   isMobileMenuOpen: false,
   
   // AI Agent States
@@ -22,7 +22,18 @@ export const usePortfolioStore = create((set, get) => ({
   // Actions
   setCurrentSection: (section) => set({ currentSection: section }),
   setLoading: (loading) => set({ isLoading: loading }),
-  toggleDarkMode: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
+  toggleDarkMode: () => set((state) => {
+    const newDarkMode = !state.isDarkMode;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('darkMode', newDarkMode.toString());
+      if (newDarkMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    return { isDarkMode: newDarkMode };
+  }),
   toggleMobileMenu: () => set((state) => ({ isMobileMenuOpen: !state.isMobileMenuOpen })),
   
   // AI Actions
