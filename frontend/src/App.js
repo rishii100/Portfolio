@@ -255,15 +255,7 @@ const HeroSection = () => {
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium mb-6"
-            >
-              <Sparkles className="w-4 h-4" />
-              AI-Powered Portfolio
-            </motion.div>
+
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
