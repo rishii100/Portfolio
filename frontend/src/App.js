@@ -335,7 +335,7 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative flex justify-center lg:justify-end"
           >
-            <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative w-72 h-80 sm:w-80 sm:h-96 rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src="/images/aneerban-photo.jpg"
                 alt="Aneerban Saha - AI/ML Engineer"
