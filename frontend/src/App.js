@@ -333,19 +333,25 @@ const HeroSection = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
+            className="relative flex justify-center lg:justify-end"
           >
-            <div className="relative w-full h-96 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1557562645-4eee56b29bc1"
-                alt="AI Development - Colorful programming code"
-                className="w-full h-full object-cover"
+                src="/images/aneerban-photo.jpg"
+                alt="Aneerban Saha - AI/ML Engineer"
+                className="w-full h-full object-cover object-center"
+                onError={(e) => {
+                  e.target.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=face"
+                }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 via-transparent to-transparent"></div>
               <div className="absolute bottom-6 left-6 text-white">
-                <p className="text-sm opacity-90">Building the Future</p>
-                <p className="text-lg font-semibold">AI-Powered Solutions</p>
+                <p className="text-sm opacity-90 font-medium">AI/ML Engineer</p>
+                <p className="text-lg font-semibold">Aneerban Saha</p>
               </div>
+              {/* Decorative elements */}
+              <div className="absolute top-4 right-4 w-3 h-3 bg-blue-400 rounded-full opacity-80"></div>
+              <div className="absolute top-8 right-8 w-2 h-2 bg-purple-400 rounded-full opacity-60"></div>
             </div>
           </motion.div>
         </div>
