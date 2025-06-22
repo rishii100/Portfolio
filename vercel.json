@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "name": "aneerban-ai-portfolio",
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/frontend/build/static/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|eot))",
+      "dest": "/frontend/build/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/build/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_GEMINI_API_KEY": "@react_app_gemini_api_key"
+  },
+  "build": {
+    "env": {
+      "REACT_APP_GEMINI_API_KEY": "@react_app_gemini_api_key"
+    }
+  },
+  "functions": {
+    "frontend/build/**": {
+      "maxDuration": 10
+    }
+  }
+}
