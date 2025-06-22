@@ -6,18 +6,10 @@
   "devCommand": "cd frontend && yarn start",
   "installCommand": "cd frontend && yarn install",
   "framework": "create-react-app",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|eot))",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/((?!static/.*).*)",
+      "destination": "/index.html"
     }
   ],
   "env": {
