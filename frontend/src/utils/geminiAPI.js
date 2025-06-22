@@ -1,66 +1,66 @@
-// Gemini API utilities for all AI agents
-const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+// Gemini API utilities for all AI agents via backend
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export class GeminiAPI {
   static async generateContent(prompt, systemPrompt = "", temperature = 0.7) {
     try {
-      const requestBody = {
-        contents: [
-          {
-            parts: [
-              {
-                text: systemPrompt ? `${systemPrompt}\n\n${prompt}` : prompt
-              }
-            ]
-          }
-        ],
-        generationConfig: {
-          temperature: temperature,
-          topK: 1,
-          topP: 1,
-          maxOutputTokens: 2048,
-        }
-      };
-
-      const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+      const response = await fetch(`${BACKEND_URL}/api/gemini/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify({
+          prompt: prompt,
+          systemPrompt: systemPrompt,
+          temperature: temperature
+        })
       });
 
       if (!response.ok) {
-        throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Backend API error: ${response.status}`);
       }
 
       const data = await response.json();
-      
-      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-        return data.candidates[0].content.parts[0].text;
-      } else {
-        throw new Error('Invalid response format from Gemini API');
-      }
+      return data.response;
     } catch (error) {
-      console.error('Gemini API Error:', error);
+      console.error('Backend API Error:', error);
       throw error;
     }
   }
 
   static async generateStructuredResponse(prompt, systemPrompt = "") {
-    const response = await this.generateContent(prompt, systemPrompt, 0.3);
     try {
-      // Try to extract JSON from the response
-      const jsonMatch = response.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        return JSON.parse(jsonMatch[0]);
+      const response = await fetch(`${BACKEND_URL}/api/gemini/structured`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          systemPrompt: systemPrompt
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Backend API error: ${response.status}`);
       }
-      return JSON.parse(response);
+
+      const data = await response.json();
+      return data;
     } catch (error) {
-      console.error('Failed to parse structured response:', error);
-      // Return a default structure if parsing fails
-      return { error: 'Failed to parse response', raw: response };
+      console.error('Backend Structured API Error:', error);
+      // Return a default structure if API fails
+      return {
+        error: 'Failed to parse response',
+        raw: error.message,
+        persona: 'general',
+        intent: 'explore_projects',
+        confidence: 0.5,
+        recommended_section: 'about',
+        personalization: 'General exploration of the portfolio'
+      };
     }
   }
 }
