@@ -115,7 +115,3 @@ Built with modern web technologies and AI integration:
 ## 📄 License
 
 © 2025 Aneerban Saha. All rights reserved.
-
----
-
-**Made with ❤️ and AI** - Showcasing the future of intelligent web experiences.
