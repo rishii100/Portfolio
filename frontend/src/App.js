@@ -335,13 +335,13 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative flex justify-center lg:justify-end"
           >
-            <div className="relative w-72 h-80 sm:w-80 sm:h-96 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative w-full max-w-md h-72 sm:h-80 lg:h-96 rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src="https://images.unsplash.com/photo-1557562645-4eee56b29bc1"
                 alt="Professional coding and AI development"
                 className="w-full h-full object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 via-transparent to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 via-transparent to-transparent"></div>
               <div className="absolute bottom-6 left-6 text-white">
                 <p className="text-sm opacity-90 font-medium">AI/ML Engineer</p>
                 <p className="text-lg font-semibold">Aneerban Saha</p>
