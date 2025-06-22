@@ -5,7 +5,7 @@ export const usePortfolioStore = create((set, get) => ({
   // UI State
   currentSection: 'hero',
   isLoading: false,
-  isDarkMode: typeof window !== 'undefined' ? localStorage.getItem('darkMode') === 'true' : true,
+  isDarkMode: typeof window !== 'undefined' ? (localStorage.getItem('darkMode') !== 'false') : true,
   isMobileMenuOpen: false,
   
   // AI Agent States
