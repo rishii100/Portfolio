@@ -95,6 +95,5 @@ export const personalInfo = {
   linkedin: "https://linkedin.com/in/aneerban-saha",
   github: "https://github.com/rishii100",
   twitter: "https://www.x.com/AneerbanS",
-  kaggle: "https://www.kaggle.com/aneerbansaha",
   resume: "https://drive.google.com/file/d/1PFXKYqiElImSOA5-mBBoGM9efVbz9hwO/view?usp=drivesdk"
 };
