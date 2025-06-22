@@ -94,7 +94,7 @@ const portfolioSections = {
       duration: 'May 2018 - Apr 2021',
       status: 'Completed'
     }
-  ],,
+  ],
   awards: [
     {
       title: "Dean's Academic Excellence Award",
