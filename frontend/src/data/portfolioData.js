@@ -81,8 +81,8 @@ export const portfolioChunks = [
   {
     id: 'contact_social',
     category: 'contact',
-    content: `Contact Information: Email: aneerbansaha22@gmail.com, Phone: 6291617680, LinkedIn: https://linkedin.com/in/aneerban-saha, GitHub: https://github.com/rishii100, X (Twitter): https://www.x.com/AneerbanS, Kaggle: https://www.kaggle.com/aneerbansaha, Resume: Available for download.`,
-    keywords: ['contact', 'email', 'phone', 'linkedin', 'github', 'twitter', 'kaggle', 'resume']
+    content: `Contact Information: Email: aneerbansaha22@gmail.com, Phone: 6291617680, LinkedIn: https://linkedin.com/in/aneerban-saha, GitHub: https://github.com/rishii100, X (Twitter): https://www.x.com/AneerbanS, Resume: Available for download.`,
+    keywords: ['contact', 'email', 'phone', 'linkedin', 'github', 'twitter', 'resume']
   }
 ];
 
