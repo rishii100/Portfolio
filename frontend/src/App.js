@@ -408,8 +408,8 @@ const AboutSection = () => {
                 <div className="text-sm text-gray-600 dark:text-gray-400">ML Model Accuracy</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">8.06</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">CGPA</div>
+                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">Excellent</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Academic Performance</div>
               </div>
             </div>
           </motion.div>
