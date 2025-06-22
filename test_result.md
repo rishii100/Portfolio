@@ -102,92 +102,44 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Please test the hero section specifically to verify that: 1. Personal Photo Display: Check if Aneerban's personal photo is now showing in the hero section instead of the coding image 2. Image Sizing: Verify the image is properly sized (should be around 320px width, 384px height, portrait orientation) 3. Image Quality: Ensure the image loads correctly and has good visual quality 4. Layout: Check that the image is properly positioned on the right side of the hero section 5. Fallback: Test if there's a fallback image in case the main image doesn't load 6. Overlay Text: Verify the overlay text shows 'AI/ML Engineer' and 'Aneerban Saha' 7. Responsive Design: Check how the image appears on mobile devices"
+user_problem_statement: "Please test both AI agents that were mentioned as having issues: 1. **PersonaRouter AI Navigation Assistant (top-right floating assistant)**: Test if it shows for 5 seconds instead of 3 seconds after classification, Input 'I'm a recruiter looking for AI talent', Verify the detected persona classification stays visible for at least 5 seconds, Check if the recommended actions appear and work properly. 2. **Portfolio Assistant (RAG Chat - bottom-right chat button)**: Click the chat button and test if it opens properly, Try asking 'What are your main skills?', Test another question like 'Tell me about your projects', Verify if responses are generated correctly (should not show backend errors), Check if the chat history is maintained properly. 3. **Overall AI Functionality**: Test if both agents are responsive and provide meaningful answers, Check for any console errors or backend connection issues, Verify the loading states and error handling."
 
 frontend:
-  - task: "Hero Section Personal Photo Display"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "testing"
-        -comment: "Personal photo is correctly displayed in the hero section. The image source is '/images/aneerban-photo.jpg' which is the personal photo rather than a coding image."
-        
-  - task: "Hero Section Image Sizing"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "testing"
-        -comment: "Image dimensions are exactly 320px × 384px, which matches the expected size (around 320px width, 384px height, portrait orientation)."
-        
-  - task: "Hero Section Image Quality"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "testing"
-        -comment: "Image loads correctly and has good visual quality. The image appears clear and professional in the screenshot."
-        
-  - task: "Hero Section Layout"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "testing"
-        -comment: "Image is correctly positioned on the right side of the hero section. The layout uses a grid with two columns, and the image is in the second column with justify-end class."
-        
-  - task: "Hero Section Fallback Image"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "testing"
-        -comment: "Fallback image mechanism works correctly. When the main image fails to load, it falls back to an Unsplash image URL (https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d)."
-        
-  - task: "Hero Section Overlay Text"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "testing"
-        -comment: "Overlay text correctly shows 'AI/ML Engineer' and 'Aneerban Saha' at the bottom of the image."
-        
-  - task: "Hero Section Responsive Design"
+  - task: "PersonaRouter AI Navigation Assistant"
     implemented: true
     working: false
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "medium"
+    file: "/app/frontend/src/components/PersonaRouter.js"
+    stuck_count: 1
+    priority: "high"
     needs_retesting: false
     status_history:
         -working: false
         -agent: "testing"
-        -comment: "The image does not properly resize for mobile view. On mobile (390px width), the image dimensions remain 320px × 384px, which is the same as desktop. The image should scale down proportionally on smaller screens."
+        -comment: "The PersonaRouter AI Navigation Assistant is visible in the top-right corner, but it fails to classify user input correctly. When submitting 'I'm a recruiter looking for AI talent', it returns a 502 error from the backend API. The error is: 'Failed to load resource: the server responded with a status of 502 () at /api/gemini/structured'. The backend API endpoint for structured responses is not working properly."
+        
+  - task: "Portfolio Assistant (RAG Chat)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/RAGChat.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "testing"
+        -comment: "The Portfolio Assistant (RAG Chat) is accessible via the bottom-right chat button and opens correctly. The chat interface displays properly with suggested questions. The chat history is maintained between questions. However, there are issues with the backend API integration for generating new responses."
+        
+  - task: "Backend API Integration"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "testing"
+        -comment: "The backend API is experiencing issues with the Flask application. The server is running locally on port 5001 and responds correctly to local requests, but there are issues with the Kubernetes ingress or proxy configuration. The '/api/gemini/structured' endpoint returns a 502 error when accessed through the frontend. The '/api/gemini/generate' endpoint works for local testing but may have issues when accessed through the frontend."
 
 metadata:
   created_by: "testing_agent"
