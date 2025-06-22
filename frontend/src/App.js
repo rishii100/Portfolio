@@ -818,9 +818,6 @@ const ContactSection = () => {
             <a href={personalInfo.twitter} target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all transform hover:scale-110">
               <Twitter className="w-6 h-6" />
             </a>
-            <a href={personalInfo.kaggle} target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all transform hover:scale-110">
-              <ExternalLink className="w-6 h-6" />
-            </a>
           </div>
         </motion.div>
       </div>
