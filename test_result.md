@@ -149,17 +149,17 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Hero Section Personal Photo Display"
-    - "Hero Section Image Sizing"
-    - "Hero Section Image Quality"
-    - "Hero Section Layout"
-    - "Hero Section Fallback Image"
-    - "Hero Section Overlay Text"
-    - "Hero Section Responsive Design"
-  stuck_tasks: []
+    - "PersonaRouter AI Navigation Assistant"
+    - "Portfolio Assistant (RAG Chat)"
+    - "Backend API Integration"
+  stuck_tasks:
+    - "PersonaRouter AI Navigation Assistant"
+    - "Backend API Integration"
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
     -agent: "testing"
-    -message: "I've tested all aspects of the hero section personal photo display. All requirements are working correctly except for the responsive design on mobile. The image maintains the same dimensions (320px × 384px) on mobile view instead of scaling down proportionally. This is a medium priority issue that should be addressed to improve the mobile experience."
+    -message: "I've tested both AI components and found issues with the backend API integration. The PersonaRouter AI Navigation Assistant is visible but fails to classify user input due to a 502 error from the backend API. The Portfolio Assistant (RAG Chat) opens correctly and maintains chat history, but has issues with generating new responses. The backend Flask app works locally on port 5001 but has issues with the Kubernetes ingress or proxy configuration."
+    -agent: "testing"
+    -message: "The backend API issue appears to be related to how the Flask app is being served. The Flask app is running correctly on localhost:5001 and responds to local requests, but there are issues with the external access through the Kubernetes ingress. The '/api/gemini/structured' endpoint returns a 502 error when accessed through the frontend. This needs to be fixed for both AI components to work properly."
