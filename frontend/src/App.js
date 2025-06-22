@@ -85,7 +85,6 @@ const portfolioSections = {
       institution: 'Manipal University Jaipur',
       location: 'Jaipur, India',
       duration: 'Aug 2021 - Present',
-      cgpa: '8.06',
       status: 'Final Year'
     },
     {
@@ -93,10 +92,9 @@ const portfolioSections = {
       institution: 'Kendriya Vidyalaya IIM Joka',
       location: 'Kolkata, India',
       duration: 'May 2018 - Apr 2021',
-      percentage: '87% (CBSE), 84% (Science)',
       status: 'Completed'
     }
-  ],
+  ],,
   awards: [
     {
       title: "Dean's Academic Excellence Award",
