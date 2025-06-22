@@ -1,7 +1,6 @@
 # Aneerban Saha - AI-Powered Portfolio
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-
 🚀 **Live Link**: [Click Here](portfolio-ten-weld-qwcouv5pr1.vercel.app/)
  
 An intelligent portfolio website featuring three AI agents powered by Google Gemini:
