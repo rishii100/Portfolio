@@ -3,8 +3,8 @@ export const portfolioChunks = [
   {
     id: 'personal_info',
     category: 'basic',
-    content: `Aneerban Saha is a B.Tech student in Computer Science and Engineering with AI/ML specialization at Manipal University Jaipur. He has a CGPA of 8.06 and is currently in his final year (Aug 2021 - present). He completed his 12th grade from Kendriya Vidyalaya IIM Joka with 87% in CBSE and 84% in 12th Science.`,
-    keywords: ['name', 'education', 'university', 'student', 'background', 'cgpa', 'manipal', 'jaipur']
+    content: `Aneerban Saha is a B.Tech student in Computer Science and Engineering with AI/ML specialization at Manipal University Jaipur. He is currently in his final year (Aug 2021 - present). He completed his 12th grade from Kendriya Vidyalaya IIM Joka.`,
+    keywords: ['name', 'education', 'university', 'student', 'background', 'manipal', 'jaipur']
   },
   {
     id: 'skills_technical',
