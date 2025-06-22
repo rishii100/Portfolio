@@ -338,13 +338,13 @@ const HeroSection = () => {
             <div className="relative w-full h-96 rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src="https://images.unsplash.com/photo-1557562645-4eee56b29bc1"
-                alt="AI Development"
+                alt="AI Development - Colorful programming code"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div className="absolute bottom-6 left-6 text-white">
-                <p className="text-sm opacity-90">AI-Powered Solutions</p>
-                <p className="text-lg font-semibold">Building the Future</p>
+                <p className="text-sm opacity-90">Building the Future</p>
+                <p className="text-lg font-semibold">AI-Powered Solutions</p>
               </div>
             </div>
           </motion.div>
