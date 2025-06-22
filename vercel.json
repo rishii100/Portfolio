@@ -12,20 +12,16 @@
       "destination": "/index.html"
     }
   ],
-  "env": {
-    "REACT_APP_GEMINI_API_KEY": "@react_app_gemini_api_key"
-  },
-  "build": {
-    "env": {
-      "REACT_APP_GEMINI_API_KEY": "@react_app_gemini_api_key"
-    }
-  },
-  "functions": {
-    "app/frontend/build/static/**": {
-      "maxDuration": 10
-    }
-  },
   "headers": [
+    {
+      "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
@@ -40,15 +36,6 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
-        }
-      ]
-    },
-    {
-      "source": "/static/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
