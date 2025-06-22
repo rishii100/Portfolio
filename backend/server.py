@@ -100,15 +100,54 @@ def generate_structured():
         if not prompt:
             return jsonify({"error": "Prompt is required"}), 400
         
-        # First generate content
-        content_response = generate_content()
+        # Prepare request for Gemini API
+        content_text = f"{system_prompt}\n\n{prompt}" if system_prompt else prompt
         
-        if content_response[1] != 200:  # Check status code
-            return content_response
+        gemini_request = {
+            "contents": [
+                {
+                    "parts": [
+                        {
+                            "text": content_text
+                        }
+                    ]
+                }
+            ],
+            "generationConfig": {
+                "temperature": 0.2,
+                "topK": 1,
+                "topP": 1,
+                "maxOutputTokens": 2048,
+            }
+        }
         
-        # Extract the response text
-        response_data = content_response[0].get_json()
-        response_text = response_data.get('response', '')
+        # Make request to Gemini API
+        headers = {
+            'Content-Type': 'application/json',
+        }
+        
+        response = requests.post(
+            f"{GEMINI_API_URL}?key={GEMINI_API_KEY}",
+            headers=headers,
+            json=gemini_request,
+            timeout=30
+        )
+        
+        logger.info(f"Gemini API response status: {response.status_code}")
+        
+        if response.status_code != 200:
+            logger.error(f"Gemini API error: {response.text}")
+            return jsonify({"error": f"Gemini API error: {response.status_code}"}), 500
+        
+        result = response.json()
+        
+        if 'candidates' in result and len(result['candidates']) > 0:
+            if 'content' in result['candidates'][0] and 'parts' in result['candidates'][0]['content']:
+                response_text = result['candidates'][0]['content']['parts'][0]['text']
+            else:
+                return jsonify({"error": "Invalid response format from Gemini API"}), 500
+        else:
+            return jsonify({"error": "No candidates in Gemini API response"}), 500
         
         # Try to parse as JSON
         try:
