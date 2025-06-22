@@ -170,9 +170,7 @@ test_plan:
     - "PersonaRouter AI Navigation Assistant"
     - "Portfolio Assistant (RAG Chat)"
     - "Backend API Integration"
-  stuck_tasks:
-    - "PersonaRouter AI Navigation Assistant"
-    - "Backend API Integration"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
