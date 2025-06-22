@@ -1,75 +1,158 @@
-from fastapi import FastAPI, APIRouter
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import requests
 import os
+import json
 import logging
-from pathlib import Path
-from pydantic import BaseModel, Field
-from typing import List
-import uuid
-from datetime import datetime
 
-
-ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
-
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
-# Create the main app without a prefix
-app = FastAPI()
-
-# Create a router with the /api prefix
-api_router = APIRouter(prefix="/api")
-
-
-# Define Models
-class StatusCheck(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
-
-class StatusCheckCreate(BaseModel):
-    client_name: str
-
-# Add your routes to the router instead of directly to app
-@api_router.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.dict()
-    status_obj = StatusCheck(**status_dict)
-    _ = await db.status_checks.insert_one(status_obj.dict())
-    return status_obj
-
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    status_checks = await db.status_checks.find().to_list(1000)
-    return [StatusCheck(**status_check) for status_check in status_checks]
-
-# Include the router in the main app
-app.include_router(api_router)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+# Set up logging
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
+app = Flask(__name__)
+CORS(app)
+
+# Gemini API configuration
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', 'AIzaSyBazT33TzT5ctJlwZ0CRd812ZqVK8rr6x4')
+GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
+
+@app.route('/api/', methods=['GET'])
+def hello_world():
+    return jsonify({"message": "Portfolio Backend API is running!"})
+
+@app.route('/api/gemini/generate', methods=['POST'])
+def generate_content():
+    try:
+        data = request.get_json()
+        prompt = data.get('prompt', '')
+        system_prompt = data.get('systemPrompt', '')
+        temperature = data.get('temperature', 0.7)
+        
+        if not prompt:
+            return jsonify({"error": "Prompt is required"}), 400
+        
+        # Prepare request for Gemini API
+        content_text = f"{system_prompt}\n\n{prompt}" if system_prompt else prompt
+        
+        gemini_request = {
+            "contents": [
+                {
+                    "parts": [
+                        {
+                            "text": content_text
+                        }
+                    ]
+                }
+            ],
+            "generationConfig": {
+                "temperature": temperature,
+                "topK": 1,
+                "topP": 1,
+                "maxOutputTokens": 2048,
+            }
+        }
+        
+        # Make request to Gemini API
+        headers = {
+            'Content-Type': 'application/json',
+        }
+        
+        response = requests.post(
+            f"{GEMINI_API_URL}?key={GEMINI_API_KEY}",
+            headers=headers,
+            json=gemini_request,
+            timeout=30
+        )
+        
+        logger.info(f"Gemini API response status: {response.status_code}")
+        
+        if response.status_code != 200:
+            logger.error(f"Gemini API error: {response.text}")
+            return jsonify({"error": f"Gemini API error: {response.status_code}"}), 500
+        
+        result = response.json()
+        
+        if 'candidates' in result and len(result['candidates']) > 0:
+            if 'content' in result['candidates'][0] and 'parts' in result['candidates'][0]['content']:
+                generated_text = result['candidates'][0]['content']['parts'][0]['text']
+                return jsonify({"response": generated_text})
+        
+        logger.error(f"Unexpected Gemini response format: {result}")
+        return jsonify({"error": "Invalid response format from Gemini API"}), 500
+        
+    except requests.exceptions.Timeout:
+        logger.error("Gemini API request timeout")
+        return jsonify({"error": "Request timeout"}), 504
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Request error: {str(e)}")
+        return jsonify({"error": f"Request failed: {str(e)}"}), 500
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
+
+@app.route('/api/gemini/structured', methods=['POST'])
+def generate_structured():
+    try:
+        data = request.get_json()
+        prompt = data.get('prompt', '')
+        system_prompt = data.get('systemPrompt', '')
+        
+        if not prompt:
+            return jsonify({"error": "Prompt is required"}), 400
+        
+        # First generate content
+        content_response = generate_content()
+        
+        if content_response[1] != 200:  # Check status code
+            return content_response
+        
+        # Extract the response text
+        response_data = content_response[0].get_json()
+        response_text = response_data.get('response', '')
+        
+        # Try to parse as JSON
+        try:
+            # Look for JSON in the response
+            json_start = response_text.find('{')
+            json_end = response_text.rfind('}') + 1
+            
+            if json_start != -1 and json_end != 0:
+                json_str = response_text[json_start:json_end]
+                parsed_json = json.loads(json_str)
+                return jsonify(parsed_json)
+            else:
+                # Try parsing the entire response
+                parsed_json = json.loads(response_text)
+                return jsonify(parsed_json)
+                
+        except json.JSONDecodeError:
+            logger.warning(f"Could not parse JSON from response: {response_text}")
+            # Return a default structure with the raw response
+            return jsonify({
+                "error": "Failed to parse response",
+                "raw": response_text,
+                "persona": "general",
+                "intent": "explore_projects",
+                "confidence": 0.5
+            })
+            
+    except Exception as e:
+        logger.error(f"Structured generation error: {str(e)}")
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
+
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    return jsonify({
+        "status": "healthy",
+        "gemini_api_configured": bool(GEMINI_API_KEY),
+        "endpoints": [
+            "/api/",
+            "/api/gemini/generate",
+            "/api/gemini/structured",
+            "/api/health"
+        ]
+    })
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
