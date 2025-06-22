@@ -728,10 +728,6 @@ const EducationSection = () => {
                 </div>
                 <div className="mt-2 md:mt-0 text-right">
                   <div className="text-gray-500 dark:text-gray-400">{edu.duration}</div>
-                  <div className="text-lg font-semibold text-green-600 dark:text-green-400">
-                    {edu.cgpa && `CGPA: ${edu.cgpa}`}
-                    {edu.percentage && edu.percentage}
-                  </div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">{edu.status}</div>
                 </div>
               </div>
