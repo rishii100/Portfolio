@@ -16,8 +16,8 @@ export const PersonaRouter = () => {
 
     const classification = await handlePersonaInput(input);
     if (classification) {
-      // Auto-hide after successful classification
-      setTimeout(() => setIsVisible(false), 3000);
+      // Auto-hide after successful classification (5 seconds)
+      setTimeout(() => setIsVisible(false), 5000);
     }
   };
 
