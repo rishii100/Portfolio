@@ -116,10 +116,13 @@ frontend:
         -working: false
         -agent: "testing"
         -comment: "The PersonaRouter AI Navigation Assistant is visible in the top-right corner, but it fails to classify user input correctly. When submitting 'I'm a recruiter looking for AI talent', it returns a 502 error from the backend API. The error is: 'Failed to load resource: the server responded with a status of 502 () at /api/gemini/structured'. The backend API endpoint for structured responses is not working properly."
+        -working: false
+        -agent: "testing"
+        -comment: "The PersonaRouter is visible and the input field works, but it fails to classify user input. The console shows an error: 'Gemini API Error: Error: Gemini API key not configured'. The timeout for auto-hiding has been set to 5 seconds in the code, but since the classification doesn't work due to the missing API key, we couldn't verify the visibility duration."
         
   - task: "Portfolio Assistant (RAG Chat)"
     implemented: true
-    working: true
+    working: false
     file: "/app/frontend/src/components/RAGChat.js"
     stuck_count: 0
     priority: "high"
@@ -128,6 +131,9 @@ frontend:
         -working: true
         -agent: "testing"
         -comment: "The Portfolio Assistant (RAG Chat) is accessible via the bottom-right chat button and opens correctly. The chat interface displays properly with suggested questions. The chat history is maintained between questions. However, there are issues with the backend API integration for generating new responses."
+        -working: false
+        -agent: "testing"
+        -comment: "The chat button is visible in the bottom-right corner and can be clicked, but the chat modal doesn't function properly. The input field is not accessible, and questions cannot be submitted. This is likely due to the same Gemini API key configuration issue that affects the PersonaRouter component."
         
   - task: "Backend API Integration"
     implemented: true
@@ -135,11 +141,14 @@ frontend:
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         -working: false
         -agent: "testing"
         -comment: "The backend API is experiencing issues with the Flask application. The server is running locally on port 5001 and responds correctly to local requests, but there are issues with the Kubernetes ingress or proxy configuration. The '/api/gemini/structured' endpoint returns a 502 error when accessed through the frontend. The '/api/gemini/generate' endpoint works for local testing but may have issues when accessed through the frontend."
+        -working: false
+        -agent: "testing"
+        -comment: "The issue is not with the backend API but with the frontend configuration. The frontend is trying to call the Gemini API directly (not through the backend), but the Gemini API key is not configured. The error in the console is: 'Gemini API Error: Error: Gemini API key not configured'. This needs to be fixed by either configuring the Gemini API key in the frontend or routing the requests through the backend."
 
 metadata:
   created_by: "testing_agent"
